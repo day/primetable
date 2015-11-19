@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'primetable'
+puts PrimeTable.run(ARGV[0])
