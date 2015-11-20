@@ -10,4 +10,7 @@ describe PrimeTable do
   it 'prints out a run time when passed a -t argument' do
     expect(`primetable -t`).to include("ms")
   end  
+  it 'prints out the version number when passed a -v argument' do
+  	expect(`primetable -v`).to include(PrimeTable::VERSION)
+  end
 end
