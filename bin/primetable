@@ -1,4 +1,12 @@
 #!/usr/bin/env ruby
 
 require 'primetable'
-puts PrimeTable.run(ARGV[0])
+require 'timer'
+
+case ARGV[0]
+  when "-t"
+    Timer.timer{puts PrimeTable.run}
+    puts Timer.time
+  else
+    puts PrimeTable.run
+end
