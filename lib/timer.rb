@@ -1,5 +1,6 @@
-module Timer
-  def Timer.timer(&block)
+class Timer
+  
+  def self.timer(&block)
     start_time = Time.now
     result = block.call
     end_time = Time.now
@@ -7,7 +8,7 @@ module Timer
     result
   end
 
-  def Timer.humanize ms
+  def self.humanize ms
     [[1000, :ms], [60, :secs], [60, :mins], [24, :hrs], [365, :days], [10000, :yrs]].map{ |count, name|
       if ms > 0
       	ms, n = ms.divmod(count)
@@ -16,12 +17,12 @@ module Timer
     }.compact.reverse.join(' ')
   end
  
-  def Timer.elapsedTime
-   Timer.humanize @time_taken
+  def self.elapsedTime
+   humanize @time_taken
   end
 
-  def Timer.time()
-    Timer.elapsedTime
+  def self.time()
+    elapsedTime
   end
 
 end

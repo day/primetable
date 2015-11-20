@@ -1,8 +1,8 @@
 require "primetable/version"
 
-module PrimeTable
+class PrimeTable
 
-  def PrimeTable.run
+  def self.run
     "PrimeTable is running..." 
   end
 
