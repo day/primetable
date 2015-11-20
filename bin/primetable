@@ -4,6 +4,7 @@ require 'primetable'
 require 'timer'
 require 'optparse'
 require 'ostruct'
+require "awesome_print"
 
 class OptParse
 
@@ -17,6 +18,7 @@ class OptParse
     # The options specified on the command line will be collected in *options*.
     # We set default values here.
     options = OpenStruct.new
+    options.flags = OpenStruct.new({time: false, n: 0, help: false, version: false})
     options.encoding = "utf8"
 
     opt_parser = OptionParser.new do |opts|
@@ -27,14 +29,19 @@ class OptParse
       
       # This will add a display of the run time to the usual output.
       opts.on_tail("-t", "--time", "Display run time") do
-        Timer.timer{puts PrimeTable.run}
-        puts Timer.time
+        options.flags.time = true
       end
       
+      opts.on("-n N", Float, "Number of primes for which you wish to generate a table") do |n|
+        options.flags.n = n.to_i
+      end
 
-      # Keyword completion.  We are specifying a specific set of arguments (CODES
-      # and CODE_ALIASES - notice the latter is a Hash), and the user may provide
-      # the shortest unambiguous text.
+      opts.on(/[0-9]{1,6}/, "Number of primes for which you wish to generate a table") do |n|
+        options.flags.n = n.to_i
+      end
+
+      # Keyword completion.  We are specifying a specific set of arguments (CODES and CODE_ALIASES - notice the
+      # latter is a Hash), and the user may provide the shortest unambiguous text.
       code_list = (CODE_ALIASES.keys + CODES).join(',')
       opts.on("--code CODE", CODES, CODE_ALIASES, "Select encoding",
               "  (#{code_list})") do |encoding|
@@ -44,17 +51,14 @@ class OptParse
       opts.separator ""
       opts.separator "Common options:"
 
-      # No argument, shows at tail.  This will print an options summary.
-      # Try it and see!
+      # No argument, shows at tail.  This will print an options summary. Try it and see!
       opts.on_tail("-h", "--help", "Show this message") do
-        puts opts
-        exit
+        options.flags.help = opts
       end
 
       # Another typical switch to print the version.
       opts.on_tail("-v", "--version", "Show version") do
-        puts "PrimeTable v#{PrimeTable::VERSION}"
-        exit
+        options.flags.version = true
       end
     end
 
@@ -64,8 +68,32 @@ class OptParse
 
 end  # class OptParse
 
-# Parse the options and behave accordingly
+# copy ARGV so I can check it later after it's gone
+ARGS = ARGV.clone
+
+# Parse the options and behave accordingly...this code alters, er, empties ARGV
 options = OptParse.parse(ARGV)
 
 # Default behavior if no options are passed
-puts PrimeTable.run
+if ARGS.length == 0
+  PrimeTable.new()
+end
+if options.flags.version
+  puts "PrimeTable v#{PrimeTable::VERSION}"
+end
+if options.flags[:time]
+  Timer.timer{
+    if options.flags.n && options.flags.n > 0
+      PrimeTable.new(1,options.flags.n)
+    else
+      PrimeTable.new()
+    end
+  }
+  puts "PrimeTable completed in #{Timer.time}"
+end
+if options.flags.help
+  puts options.flags.help
+end
+# Eventually, we hope to allow the user to pass a first|start flag as well; currently defaulting to 1
+
+exit
