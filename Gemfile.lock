@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    primetable (0.2.2)
+    primetable (0.2.3)
       awesome_print (~> 1.6, >= 1.6.1)
       therubyracer (~> 0.12.2)
 
