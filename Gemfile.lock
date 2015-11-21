@@ -3,13 +3,16 @@ PATH
   specs:
     primetable (0.2.2)
       awesome_print (~> 1.6, >= 1.6.1)
+      therubyracer (~> 0.12.2)
 
 GEM
   remote: https://rubygems.org/
   specs:
     awesome_print (1.6.1)
     diff-lcs (1.2.5)
+    libv8 (3.16.14.13)
     rake (10.4.2)
+    ref (2.0.0)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -23,6 +26,9 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.0)
+    therubyracer (0.12.2)
+      libv8 (~> 3.16.14.0)
+      ref
 
 PLATFORMS
   ruby
