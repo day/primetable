@@ -1,5 +1,6 @@
-# Not sure why this is here. I'll have to experiment with taking it out.
-require "primetable/version"
+# Require modules from the lib/primetable directory...right now it's just our VERSION constant
+Dir["#{File.dirname(__FILE__)}/primetable/**/*.rb"].each { |f| require(f) }
+puts PrimeTable::VERSION
 
 # This is needed for load_primes method, which loads data from a file.
 require "yaml"
