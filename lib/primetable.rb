@@ -41,7 +41,6 @@ class PrimeTable
     case prime_method
       when :fast # Shaves off about between 10 and 40 milliseconds vs. the :load method
         [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
-
       when :load # Using precalculated values saves us a lot of time vs. the :calc method
         load_primes(first,count)
       when :calc # The slowest, but presumably preferred, method in our arsenal
@@ -60,16 +59,14 @@ class PrimeTable
   # Loads precalculated primes from a data file. The file is formatted with 10 primes per line.
   # Each line is enclosed in square brackets, and the primes are comma-delimited. Thus, it's
   # trivial to read each line in as an array of ten primes. Please note that this file is 995K
-
   # and contains 13413 lines. You don't want to just slurp this file. That would be rude. Instead
-
   # we read lines one at a time and only keep what we need. Also note the highest prime in this
-  # file is currently 1999993, although conceivably we could use the :calc method and extend it.
+  # file is currently 2000029, although conceivably we could use the :calc method and extend it.
   def load_primes(first, count)
 
-    # Again, we only have the first 134128 primes in here right now
-    if (first + count) > 134128
-      throw "We only have the first 134128 primes in the data file right now. Please pass -c to use calculated primes."
+    # Again, we only have the first 134130 primes in here right now
+    if (first + count) > 134130
+      throw "We only have the first 134130 primes in the data file right now. Please pass -c to use calculated primes."
     end
 
     # An array to keep our prime numbers in, right?
@@ -77,10 +74,8 @@ class PrimeTable
 
     # Because there are ten primes on each line, we can get the line number we're looking for by
     # dividing the indices we want by 10 and rounding down for the bottom of our range and up for
-
     # the top. It's not immediately intuitive why we might want to do this, but it's because:
     #   1) We don't want to slurp the whole file...what if the file was even larger? Not cool.
-
     #   2) IO.readlines gets the file one line at a time, so we need a line number, not an index.
 
     first_line = (first/10).floor
