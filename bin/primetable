@@ -81,7 +81,7 @@ end
 if options.flags.version
   puts "PrimeTable v#{PrimeTable::VERSION}"
 end
-if options.flags[:time]
+if options.flags.time
   Timer.timer{
     if options.flags.n && options.flags.n > 0
       PrimeTable.new(1,options.flags.n)

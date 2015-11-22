@@ -44,8 +44,8 @@ class PrimeTable
     # Of course, we calculate the primes by default. But having three methods is not only
     # fancy; it's also comes in handy for testing that our calculated values are correct.
     case prime_method
-        [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
       when :fast # Using precalculated values from code. 3-8ms on benchmark run.
+        PrimeTable::PRIMES.slice(first-1,count)
       when :load # Using precalculated values from file. 13-23ms on benchmark run.
         load_primes(first,count)
       when :calc # Using JS generated values. 8-16ms on benchmark run.
