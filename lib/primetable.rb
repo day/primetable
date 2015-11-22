@@ -7,6 +7,11 @@ require "yaml"
 # I'll probably remove this later, but it's my interim table display solution.
 require "awesome_print"
 
+# So, just for fun, I'm going to write my Ruby prime generation method and a few others as
+# wrappers for some JS functionality I've already written. We'll test as usual. Perhaps, if
+# I ever get around to writing Ruby native versions, we can have them race eachother.
+require "v8"
+
 # It's a pretty simple program. I considered making multiple classes, but it's not necessary.
 class PrimeTable
 
@@ -22,7 +27,7 @@ class PrimeTable
     end
 
     # Ye olde instance variables
-    @primes = init_primes(:load,first,count)
+    @primes = init_primes(prime_method,first,count)
     @table = build_data(@primes)
 
     # I added this suppress_output so I could run certain tests without a huge, admittly
@@ -39,11 +44,11 @@ class PrimeTable
     # Of course, we calculate the primes by default. But having three methods is not only
     # fancy; it's also comes in handy for testing that our calculated values are correct.
     case prime_method
-      when :fast # Shaves off about between 10 and 40 milliseconds vs. the :load method
         [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
-      when :load # Using precalculated values saves us a lot of time vs. the :calc method
+      when :fast # Using precalculated values from code. 3-8ms on benchmark run.
+      when :load # Using precalculated values from file. 13-23ms on benchmark run.
         load_primes(first,count)
-      when :calc # The slowest, but presumably preferred, method in our arsenal
+      when :calc # Using JS generated values. 8-16ms on benchmark run.
         calc_primes(first,count)
     end # case prime_method
 
@@ -53,6 +58,16 @@ class PrimeTable
   # TODO: Include note on computational complexity here: O(n*sqrt(n)), I think
   # TODO: Include note on average run time using this method.
   def calc_primes(first, count)
+
+    # One nice thing about this is that I can easily set a timeout, so I someone asks us to run
+    # some astronomical prime, we won't seize up the CPU forever. 700ms is arbitrary.
+    calc_primes_js = V8::Context.new timeout: 700
+    File.open("js/prime.js") do |file|
+      calc_primes_js.eval(file, "js/prime.js")
+    end
+    primes_js = calc_primes_js.eval("generatePrimes(#{first})")
+    primes = YAML::load("[#{primes_js}]")
+    return primes
 
   end
 

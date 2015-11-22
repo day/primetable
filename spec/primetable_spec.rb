@@ -70,4 +70,9 @@ describe PrimeTable do
     expect(test_instance.primes).to eq(@expected_first_ten_primes)
     expect(test_instance.table).to eq(@expected_table_with_first_ten_primes)
   end
+  it "has the right data when we run it with :calc" do
+    test_instance = PrimeTable.new(1,10,:calc,true)
+    expect(test_instance.primes).to eq(@expected_first_ten_primes)
+    expect(test_instance.table).to eq(@expected_table_with_first_ten_primes)
+  end
 end

@@ -1,31 +1,55 @@
+var factors = [];
+var primes = [];
+
 function libPrime(method, n) {
-  // we don't care about divisibility by 1, so we begin at 2
-  var divisor = 2;
-  if (method === "primeFactors") {
-    var factors = [];
+  if (method === "isPrime" && n === 1) {
+    return false;
   }
-  // if a suitable divisor exists it will be less than or equal to the square root of n
-  // due to the commutative property of multiplication
+  if (method === "generatePrimes") {
+    var count = 10;
+    // console.log("primes.length:"+primes.length);
+    while (primes.length<count) {
+      if (isPrime(n) && (primes.indexOf(n) === -1)) {
+        // console.log("isPrime(n):true:"+n);
+        primes.push(n);
+        // console.log("primes:"+primes+", primes.length:"+primes.length);
+      } else {
+        // console.log("isPrime(n):false:"+n);
+        n++;
+        generatePrimes(n);
+      }
+    }
+    return primes;
+  }
+  // console.log("* n:"+n);
+  // We don't care about divisibility by 1, so we begin at 2
+  var divisor = 2;
+
+  // If a suitable divisor exists it will be less than or equal to the square root of n
+  // Due to the commutative property of multiplication
   while ((divisor <= Math.floor(Math.sqrt(n)))) {
+    // console.log("** n:"+n+", divisor:"+divisor+", n % divisor:"+(n % divisor));
     if (!(n % divisor)) {
-      // if n is divisible with remainder zero, then it's non-prime
+      // console.log("*** n:"+n+", divisor:"+divisor);
+      // If n is divisible with remainder zero, then it's non-prime
       switch (method) {
       case "isPrime":
         return false;
       case "primeFactors":
-        // the divisor will always be a prime factor
+        // The divisor will always be a prime factor
         factors.push(divisor);
-        // the quotient may or may not be prime, so we recurse here
-        factors.push(primeFactors(n/divisor));
+        // The quotient may or may not be prime, so we recurse here
+        // console.log("**** n:"+n+", divisor:"+divisor+", n/divisor:"+n/divisor);
+        primeFactors(n/divisor);
         return factors;
       }
     }
     else {
-      // if n is not evenly divisible then we increment the divisor and continue
+      // If n is not evenly divisible then we increment the divisor and continue
       if (divisor >= 3) {
-        divisor += 2; // because all even numbers > 2 are non-prime
+        divisor += 2; // Because all even numbers > 2 are non-prime
       } else {
-        divisor += 1; // just once, from 2 to 3
+        divisor += 1; // Just once, from 2 to 3
       }
     }
   }
@@ -35,18 +59,29 @@ function libPrime(method, n) {
   case "primeFactors":
     factors.push(n);
     return factors;
+  case "generatePrimes":
+    primes.push(n);
   }
 }
 
+// Returns true if n is prime
 function isPrime(n) {
-  return libPrime("isPrime",[n]);
+  return libPrime("isPrime",n);
 }
 
+// Returns n if prime, or the prime factors of n if composite
 function primeFactors(n) {
-  return libPrime("primeFactors",[n]);
+  return libPrime("primeFactors",n);
 }
 
-// try it out
-for (var i = 1; i < 1002; i++) {
-  console.log(i + " is " + (isPrime(i) ? "PRIME" : "COMPOSITE") + (!(isPrime(i)) ? (": " + primeFactors(i)) : ""));
+// Generate an array of prime numbers greater than or equal to n with length count
+function generatePrimes(n) {
+  return libPrime("generatePrimes",n);
 }
+// Try it out
+// // console.log(isPrime(1));
+// console.log(generatePrimes(1999867));
+// Try it out
+// for (var i = 1; i < 1002; i++) {
+//   // console.log(i + " is " + (isPrime(i) ? "PRIME" : "COMPOSITE") + (!(isPrime(i)) ? (": " + primeFactors(i)) : ""));
+// }
