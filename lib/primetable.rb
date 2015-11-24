@@ -4,8 +4,8 @@ Dir["#{File.dirname(__FILE__)}/primetable/**/*.rb"].each { |f| require(f) }
 # This is needed for load_primes method, which loads data from a file.
 require "yaml"
 
-# I'll probably remove this later, but it's my interim table display solution.
-require "awesome_print"
+# This is used in the display_table method to...um, display the table ;-)
+require "formatador"
 
 # So, just for fun, I'm going to write my Ruby prime generation method and a few others as
 # wrappers for some JS functionality I've already written. We'll test as usual. Perhaps, if
@@ -22,7 +22,6 @@ class PrimeTable
 
     # This is only for testing, I'm unlikely to implement a command-line flag for this
     unless suppress_output
-
       puts "PrimeTable is running..."
     end
 
@@ -136,13 +135,19 @@ class PrimeTable
 
   end
 
-  # The plan is to use Formatador to make this display nicely. For now, I'm just dumping the data,
-  # and making it slightly less lame with awesome_print.
+  # Use Formatador to make this display nicely.
   def display_table(table)
-
-    # Not much to see here. But I expect to be able to justify a comment soon enough.
-    ap table
-
+    columns = table.shift
+    table_data = table.map do |products|
+      row_hash = Hash.new
+      columns.each_with_index do |label, index|
+        key = (columns[index] || '')
+        row_hash[key] = products[index]
+      end
+      row_hash
+    end
+    # Note that we override the default string sort by passing a block with an integer sort
+    Formatador.display_table(table_data){ |x, y| x.to_i <=> y.to_i }
   end
 
 end

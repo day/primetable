@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    primetable (0.3.0)
+    primetable (0.3.1)
       awesome_print (~> 1.6, >= 1.6.1)
       formatador (~> 0.2, >= 0.2.5)
       therubyracer (~> 0.12, >= 0.12.2)
@@ -10,9 +10,15 @@ GEM
   remote: https://rubygems.org/
   specs:
     awesome_print (1.6.1)
+    coderay (1.1.0)
     diff-lcs (1.2.5)
     formatador (0.2.5)
     libv8 (3.16.14.13)
+    method_source (0.8.2)
+    pry (0.10.2)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     rake (10.4.2)
     ref (2.0.0)
     rspec (3.4.0)
@@ -28,6 +34,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.0)
+    slop (3.6.0)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
@@ -38,6 +45,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.6)
   primetable!
+  pry
   rake (~> 10.4, >= 10.4.2)
   rspec (~> 3.4, >= 3.4.0)
 
