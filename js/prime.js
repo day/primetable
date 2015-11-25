@@ -1,3 +1,8 @@
+// LIBPRIME
+// Script: prime.js
+// Author: Day Davis Waterbury
+// License: MIT (../LICENSE.txt)
+
 var factors = [];
 var primes = [];
 
@@ -20,7 +25,7 @@ function libPrime(method, n, count) {
     }
     return primes;
   }
-  // console.log("* n:"+n);
+
   // We don't care about divisibility by 1, so we begin at 2
   var divisor = 2;
 
@@ -77,10 +82,3 @@ function primeFactors(n) {
 function generatePrimes(n,count) {
   return libPrime("generatePrimes",n, count);
 }
-// Try it out
-// // console.log(isPrime(1));
-// console.log(generatePrimes(1999867));
-// Try it out
-// for (var i = 1; i < 1002; i++) {
-//   // console.log(i + " is " + (isPrime(i) ? "PRIME" : "COMPOSITE") + (!(isPrime(i)) ? (": " + primeFactors(i)) : ""));
-// }

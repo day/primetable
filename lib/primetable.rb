@@ -131,7 +131,7 @@ class PrimeTable
     # Here we read in the file one line at a time. Yes I looked for a faster way. Try :fast (-f).
     #  1) We don't want to slurp the whole file...what if the file was even larger? Not cool.
     #  2) IO.readlines gets the file one line at a time, so we need a line number, not an index.
-    IO.readlines("data/prime.dat").each_with_index{|line,ln|
+    IO.readlines("#{ROOT_DIR}/data/prime.dat").each_with_index{|line,ln|
       
       # When we find the lines we want, we concatenate them into a single array. We get extra.
       if (ln >= first_line and ln <= last_line)
@@ -152,8 +152,8 @@ class PrimeTable
     # One nice thing about this is that I can easily set a timeout, so if someone asks us to run
     # some astronomical prime, we won't seize up the CPU forever. 7000ms is arbitrary.
     calc_primes_js = V8::Context.new timeout: 7000
-    File.open("js/prime.js") do |file|
-      calc_primes_js.eval(file, "#{ROOT_DIR}/js/prime.js")
+    File.open("#{ROOT_DIR}/js/prime.js") do |file|
+      calc_primes_js.eval(file)
     end
     primes_js = calc_primes_js.eval("generatePrimes(#{first},#{count})")
     YAML::load("[#{primes_js}]")

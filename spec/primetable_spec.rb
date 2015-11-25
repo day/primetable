@@ -81,6 +81,14 @@ Common options:
     expect(PrimeTable::VERSION).not_to be nil
   end
 
+  it "can access the JS script for generating primes" do
+    expect(`head -n 1 #{ROOT_DIR}/js/prime.js`).to eq "// LIBPRIME\n"
+  end
+
+  it "can access the data file for pre-calculated primes" do
+    expect(`head -n 1 #{ROOT_DIR}/data/prime.dat`).to eq "[2,3,5,7,11,13,17,19,23,29]\n"
+  end
+
   it 'executes when called on the command line' do
     expect(`primetable`).to include("PrimeTable is running...\n")
   end
