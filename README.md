@@ -13,7 +13,11 @@
     Usage: primetable [options]
     
     Specific options:
-        --code CODE                      Select encoding
+        -f F                             First prime (default is 2)
+        -n N                             Number of primes for which you wish to generate a table
+        -m, --method METHOD              Select method of generating primes (default is 'calc')
+                                           (fast,load,calc)
+            --code CODE                  Select encoding
                                            (jis,sjis,iso-2022-jp,shift_jis,euc-jp,utf8,binary)
     
     Common options:
