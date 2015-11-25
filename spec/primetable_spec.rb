@@ -45,6 +45,24 @@ describe PrimeTable do
   +----+----+----+-----+-----+-----+-----+-----+-----+-----+-----+
   | 29 | 58 | 87 | 145 | 203 | 319 | 377 | 493 | 551 | 667 | 841 |
   +----+----+----+-----+-----+-----+-----+-----+-----+-----+-----+"
+    @expected_table_display_370_seven = "
+  +-----+--------+--------+--------+--------+--------+--------+--------+
+  |     | 373    | 379    | 383    | 389    | 397    | 401    | 409    |
+  +-----+--------+--------+--------+--------+--------+--------+--------+
+  | 373 | 139129 | 141367 | 142859 | 145097 | 148081 | 149573 | 152557 |
+  +-----+--------+--------+--------+--------+--------+--------+--------+
+  | 379 | 141367 | 143641 | 145157 | 147431 | 150463 | 151979 | 155011 |
+  +-----+--------+--------+--------+--------+--------+--------+--------+
+  | 383 | 142859 | 145157 | 146689 | 148987 | 152051 | 153583 | 156647 |
+  +-----+--------+--------+--------+--------+--------+--------+--------+
+  | 389 | 145097 | 147431 | 148987 | 151321 | 154433 | 155989 | 159101 |
+  +-----+--------+--------+--------+--------+--------+--------+--------+
+  | 397 | 148081 | 150463 | 152051 | 154433 | 157609 | 159197 | 162373 |
+  +-----+--------+--------+--------+--------+--------+--------+--------+
+  | 401 | 149573 | 151979 | 153583 | 155989 | 159197 | 160801 | 164009 |
+  +-----+--------+--------+--------+--------+--------+--------+--------+
+  | 409 | 152557 | 155011 | 156647 | 159101 | 162373 | 164009 | 167281 |
+  +-----+--------+--------+--------+--------+--------+--------+--------+"
 
   end
 
@@ -86,22 +104,38 @@ describe PrimeTable do
   end
 
   it "has the right data when we run it with :load" do
-    test_instance = PrimeTable.new(1,10,:load,true)
+    test_instance = PrimeTable.new(2,10,:load,true)
     expect(test_instance.primes).to eq(@expected_first_ten_primes)
     expect(test_instance.table).to eq(@expected_table_with_first_ten_primes)
   end
   it "has the right data when we run it with :fast" do
-    test_instance = PrimeTable.new(1,10,:fast,true)
+    test_instance = PrimeTable.new(2,10,:fast,true)
     expect(test_instance.primes).to eq(@expected_first_ten_primes)
     expect(test_instance.table).to eq(@expected_table_with_first_ten_primes)
   end
   it "has the right data when we run it with :calc" do
-    test_instance = PrimeTable.new(1,10,:calc,true)
+    test_instance = PrimeTable.new(2,10,:calc,true)
     expect(test_instance.primes).to eq(@expected_first_ten_primes)
     expect(test_instance.table).to eq(@expected_table_with_first_ten_primes)
   end
   
   it "displays the table properly for the first ten primes" do
-    expect(`primetable`).to include(@expected_table_display_first_ten)
+    execution_output = `primetable`
+    expect(execution_output).to include(@expected_table_display_first_ten)
+    execution_output = `primetable 1,10 -m calc`
+    expect(execution_output).to include(@expected_table_display_first_ten)
+    execution_output = `primetable -f 2 -n 10 --method fast`
+    expect(execution_output).to include(@expected_table_display_first_ten)
+    execution_output = `primetable -f 2 -m load`
+    expect(execution_output).to include(@expected_table_display_first_ten)
+  end
+
+  it "displays the table properly for the next 7 primes after 370 (yes, I know, not a prime)" do
+    execution_output = `primetable 370,7 -m calc`
+    expect(execution_output).to include(@expected_table_display_370_seven)
+    execution_output = `primetable -f 370 -n 7 --method fast`
+    expect(execution_output).to include(@expected_table_display_370_seven)
+    execution_output = `primetable 370,7 -m load`
+    expect(execution_output).to include(@expected_table_display_370_seven)
   end
 end

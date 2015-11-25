@@ -4,10 +4,11 @@ require 'primetable'
 require 'timer'
 require 'optparse'
 require 'ostruct'
-require "awesome_print"
+require 'pry'
 
 class OptParse
 
+  METHODS = %w[fast load calc]
   CODES = %w[iso-2022-jp shift_jis euc-jp utf8 binary]
   CODE_ALIASES = { "jis" => "iso-2022-jp", "sjis" => "shift_jis" }
 
@@ -31,13 +32,35 @@ class OptParse
       opts.on_tail("-t", "--time", "Display run time") do
         options.flags.time = true
       end
+  
+      # I think we can agree it's wise to limit the starting prime index to no more than 9999999999
+      opts.on("-f F", Float, "First prime (where count starts). E.g. Default is 2 for the 1st prime.") do |f|
+        if f.to_i <= 9999999999
+          options.flags.f = f.to_i
+        end
+      end
       
+      # I'm limiting the count arbitraily to 99 here, and silently ignoring requests for counts of 100 or higher
       opts.on("-n N", Float, "Number of primes for which you wish to generate a table") do |n|
+        if n.to_i < 99
+          options.flags.n = n.to_i
+        end
+      end
+      
+      # Likewise, here I'm limiting the count arbitraily to 99
+      opts.on(/[0-9]{1,2}/, "Number of primes for which you wish to generate a table") do |n|
         options.flags.n = n.to_i
       end
+      
+      # And finally, here as well I'm limiting the count arbitraily to 99...honestly we can't reasonably display > 20
+      # I'm also limiting us to starting prime indices 10 digits or less (as above)
+      opts.on(/[0-9]{1,10},[0-9]{1,2}/, "Number of primes for which you wish to generate a table") do |fn|
+        options.flags.f = fn.split(",")[0].to_i
+        options.flags.n = fn.split(",")[1].to_i
+      end
 
-      opts.on(/[0-9]{1,6}/, "Number of primes for which you wish to generate a table") do |n|
-        options.flags.n = n.to_i
+      opts.on("-m METHOD", "--method METHOD", METHODS, "Select method of generating primes") do |method|
+        options.flags.prime_method = method.to_sym
       end
 
       # Keyword completion.  We are specifying a specific set of arguments (CODES and CODE_ALIASES - notice the
@@ -78,18 +101,54 @@ options = OptParse.parse(ARGV)
 if ARGS.length == 0
   PrimeTable.new()
 end
+
+# We default to calculating the primes on the fly
+if options.flags.prime_method === nil
+  options.flags.prime_method = :calc
+end
+
+# Otherwise we do various things based on the options.
+# TODO: DRY this up! I'm repeating myself a lot right here.
 if options.flags.version
   puts "PrimeTable v#{PrimeTable::VERSION}"
 end
 if options.flags.time
   Timer.timer{
-    if options.flags.n && options.flags.n > 0
-      PrimeTable.new(1,options.flags.n)
+    if options.flags.f && options.flags.f > 0
+      if options.flags.n && options.flags.n > 0
+        PrimeTable.new(options.flags.f,options.flags.n,options.flags.prime_method)
+      else
+        # TODO: Pass a hash or args so I don't have order-dependency forcing redundant defaults
+        PrimeTable.new(options.flags.f,10,options.flags.prime_method)
+      end
     else
-      PrimeTable.new()
+      if options.flags.n && options.flags.n > 0
+        # TODO: Pass a hash or args so I don't have order-dependency forcing redundant defaults
+        PrimeTable.new(2,options.flags.n,options.flags.prime_method)
+      else
+        # TODO: Pass a hash or args so I don't have order-dependency forcing redundant defaults
+        PrimeTable.new(2,10,options.flags.prime_method)
+      end
     end
   }
   puts "PrimeTable completed in #{Timer.time}"
+else
+  if options.flags.f && options.flags.f > 0
+      if options.flags.n && options.flags.n > 0
+        PrimeTable.new(options.flags.f,options.flags.n,options.flags.prime_method)
+      else
+        # TODO: Pass a hash or args so I don't have order-dependency forcing redundant defaults
+        PrimeTable.new(options.flags.f,10,options.flags.prime_method)
+      end
+    else
+      if options.flags.n && options.flags.n > 0
+        # TODO: Pass a hash or args so I don't have order-dependency forcing redundant defaults
+        PrimeTable.new(2,options.flags.n,options.flags.prime_method)
+      else
+        # TODO: Pass a hash or args so I don't have order-dependency forcing redundant defaults
+        PrimeTable.new(2,10,options.flags.prime_method)
+      end
+    end
 end
 if options.flags.help
   puts options.flags.help

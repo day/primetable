@@ -1,12 +1,11 @@
 var factors = [];
 var primes = [];
 
-function libPrime(method, n) {
+function libPrime(method, n, count) {
   if (method === "isPrime" && n === 1) {
     return false;
   }
   if (method === "generatePrimes") {
-    var count = 10;
     // console.log("primes.length:"+primes.length);
     while (primes.length<count) {
       if (isPrime(n) && (primes.indexOf(n) === -1)) {
@@ -75,8 +74,8 @@ function primeFactors(n) {
 }
 
 // Generate an array of prime numbers greater than or equal to n with length count
-function generatePrimes(n) {
-  return libPrime("generatePrimes",n);
+function generatePrimes(n,count) {
+  return libPrime("generatePrimes",n, count);
 }
 // Try it out
 // // console.log(isPrime(1));
