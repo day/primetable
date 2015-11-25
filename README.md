@@ -1,4 +1,4 @@
-# PrimeTable
+# PrimeTable v1.1.0
 
   **Prints a multiplication table of N primes to STDOUT**
 
