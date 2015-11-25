@@ -4,7 +4,6 @@ require 'primetable'
 require 'timer'
 require 'optparse'
 require 'ostruct'
-require 'pry'
 
 class OptParse
 

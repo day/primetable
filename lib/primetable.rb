@@ -1,9 +1,8 @@
-# Require modules from the lib/primetable directory...right now it's just our VERSION constant
+# Require modules from the lib/primetable directory...a PRIMES constant, and a VERSION constant
 Dir["#{File.dirname(__FILE__)}/primetable/**/*.rb"].each { |f| require(f) }
 
 # This is needed for load_primes method, which loads data from a file.
 require "yaml"
-require "pry"
 
 # This is used in the display_table method to...um, display the table ;-)
 require "formatador"
