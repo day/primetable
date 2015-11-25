@@ -92,6 +92,7 @@ Common options:
   it 'executes when called on the command line' do
     expect(`primetable`).to include("PrimeTable is running...\n")
   end
+
   it 'executes *and* prints out a run time when passed -t or --time' do
     execution_output = `primetable -t`
     expect(execution_output).to include(@expected_execution_output)
@@ -99,22 +100,36 @@ Common options:
     execution_output = `primetable --time`
     expect(execution_output).to include(@expected_execution_output)
     expect(execution_output).to include(@expected_time_output)
-  end  
-  it 'prints out the version number when passed -v or --version' do
-    expect(`primetable -v`).to include(@expected_version_output)
   end
+
+  it 'prints out the version number when passed -v or --version' do
+    execution_output = `primetable -v`
+    expect(execution_output).to include(@expected_version_output)
+    execution_output = `primetable --version`
+    expect(execution_output).to include(@expected_version_output)
+  end
+
+  it 'it does *not* generate a table when called with *only* -v or --version' do
+    execution_output = `primetable -v`
+    expect(execution_output).not_to include(@expected_table_display_first_ten)
+    execution_output = `primetable --version`
+    expect(execution_output).not_to include(@expected_table_display_first_ten)
+  end
+
   it 'executes *and* prints out a run time *and* prints out the version number when passed both -t and -v arguments' do
     execution_output = `primetable -tv`
     expect(execution_output).to include(@expected_execution_output)
     expect(execution_output).to include(@expected_time_output)
     expect(execution_output).to include(@expected_version_output)
   end
+
   it 'executes *and* prints out a run time *and* prints out the version number when passed both --time and --version arguments' do
     execution_output = `primetable --time --version`
     expect(execution_output).to include(@expected_execution_output)
     expect(execution_output).to include(@expected_time_output)
     expect(execution_output).to include(@expected_version_output)
   end
+
   it 'prints out usage details when passed -h or --help' do
     execution_output = `primetable -h`
     expect(execution_output).to include(@expected_help_output)
@@ -122,16 +137,25 @@ Common options:
     expect(execution_output).to include(@expected_help_output)
   end
 
+  it 'it does *not* generate a table when called with *only* -h or --help' do
+    execution_output = `primetable -h`
+    expect(execution_output).not_to include(@expected_table_display_first_ten)
+    execution_output = `primetable --help`
+    expect(execution_output).not_to include(@expected_table_display_first_ten)
+  end
+
   it "has the right data when we run it with :load" do
     test_instance = PrimeTable.new(2,10,:load,true)
     expect(test_instance.primes).to eq(@expected_first_ten_primes)
     expect(test_instance.table).to eq(@expected_table_with_first_ten_primes)
   end
+
   it "has the right data when we run it with :fast" do
     test_instance = PrimeTable.new(2,10,:fast,true)
     expect(test_instance.primes).to eq(@expected_first_ten_primes)
     expect(test_instance.table).to eq(@expected_table_with_first_ten_primes)
   end
+
   it "has the right data when we run it with :calc" do
     test_instance = PrimeTable.new(2,10,:calc,true)
     expect(test_instance.primes).to eq(@expected_first_ten_primes)
