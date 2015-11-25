@@ -1,5 +1,6 @@
 # Require modules from the lib/primetable directory...a PRIMES constant, and a VERSION constant
-Dir["#{File.dirname(__FILE__)}/primetable/**/*.rb"].each { |f| require(f) }
+ROOT_DIR = "#{File.dirname(File.expand_path('..', __FILE__))}"
+Dir["#{ROOT_DIR}/lib/primetable/**/*.rb"].each { |f| require(f) }
 
 # This is needed for load_primes method, which loads data from a file.
 require "yaml"
@@ -113,7 +114,7 @@ class PrimeTable
 
     grep_result = []
     while grep_result == []
-      grep_result = `grep -n -e "#{wb_before}#{first}#{wb_after}" data/prime.dat`.split(":")
+      grep_result = `grep -n -e "#{wb_before}#{first}#{wb_after}" #{ROOT_DIR}/data/prime.dat`.split(":")
       if grep_result == []
         first = first + 1
       end
@@ -152,7 +153,7 @@ class PrimeTable
     # some astronomical prime, we won't seize up the CPU forever. 7000ms is arbitrary.
     calc_primes_js = V8::Context.new timeout: 7000
     File.open("js/prime.js") do |file|
-      calc_primes_js.eval(file, "js/prime.js")
+      calc_primes_js.eval(file, "#{ROOT_DIR}/js/prime.js")
     end
     primes_js = calc_primes_js.eval("generatePrimes(#{first},#{count})")
     YAML::load("[#{primes_js}]")
