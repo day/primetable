@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    primetable (1.0.0)
+    primetable (1.1.0)
       formatador (~> 0.2, >= 0.2.5)
       therubyracer (~> 0.12, >= 0.12.2)
 
@@ -43,7 +43,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.6)
   primetable!
-  pry
+  pry (~> 0.10, >= 0.10.2)
   rake (~> 10.4, >= 10.4.2)
   rspec (~> 3.4, >= 3.4.0)
 

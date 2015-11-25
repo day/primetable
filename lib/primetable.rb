@@ -63,11 +63,11 @@ class PrimeTable
     # Of course, we calculate the primes by default. But having three methods is not only
     # fancy; it's also comes in handy for testing that our calculated values are correct.
     case prime_method
-      when :fast # Using precalculated values from code. 3-8ms on benchmark run.
+      when :fast # Using precalculated values from code. 8-17ms, mode 13ms on benchmark (2,10) run, 14-24ms/20ms on (200000,12)
         fast_primes(first,count)
-      when :load # Using precalculated values from file. 13-23ms on benchmark run.
+      when :load # Using precalculated values from file. 45-256ms, mode 50ms on benchmark (2,10) run, 669-913ms/681ms on (200000,12)
         load_primes(first,count)
-      when :calc # Using JS generated values. 8-16ms on benchmark run.
+      when :calc # Using JS generated values. 14-84ms, Mode 18ms on benchmark (2,10) run, 17-25ms/21ms on (200000,12)
         calc_primes(first,count)
     end # case prime_method
 
@@ -96,11 +96,11 @@ class PrimeTable
 
     # Previously, the 'first' argument was an index, now it's a best guess for the first prime,
     # so we have to find the index in order to find the line number
-    if first === 1
+    if first == 1
       first = 2
     end
 
-    if first === 2
+    if first == 2
       wb_before = ""
     else
       wb_before = ","
@@ -113,9 +113,9 @@ class PrimeTable
     end
 
     grep_result = []
-    while grep_result === []
+    while grep_result == []
       grep_result = `grep -n -e "#{wb_before}#{first}#{wb_after}" data/prime.dat`.split(":")
-      if grep_result === []
+      if grep_result == []
         first = first + 1
       end
     end
@@ -149,9 +149,9 @@ class PrimeTable
   # TODO: Include note on average run time using this method.
   def calc_primes(first, count)
 
-    # One nice thing about this is that I can easily set a timeout, so I someone asks us to run
-    # some astronomical prime, we won't seize up the CPU forever. 700ms is arbitrary.
-    calc_primes_js = V8::Context.new timeout: 700
+    # One nice thing about this is that I can easily set a timeout, so if someone asks us to run
+    # some astronomical prime, we won't seize up the CPU forever. 7000ms is arbitrary.
+    calc_primes_js = V8::Context.new timeout: 7000
     File.open("js/prime.js") do |file|
       calc_primes_js.eval(file, "js/prime.js")
     end

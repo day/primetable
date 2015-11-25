@@ -5,8 +5,15 @@ describe PrimeTable do
     @expected_execution_output = "PrimeTable is running...\n"
     @expected_time_output = "ms"
     @expected_version_output = PrimeTable::VERSION
-    @expected_help_output = "Common options:
+    @expected_help_output = "Usage: primetable [options]
+
+Specific options:
+    -f F                             First prime (default is 2, limit is 2000003 w/ -m load|fast, 9007199254740727 w/ -m calc)
+    -n N                             Number of primes for which you wish to generate a table
+    -m, --method METHOD              Select method of generating primes (fast|load|calc) (default is 'calc')
     -t, --time                       Display run time
+
+Common options:
     -h, --help                       Show this message
     -v, --version                    Show version"
     @expected_first_ten_primes = [2,3,5,7,11,13,17,19,23,29]
