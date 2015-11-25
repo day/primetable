@@ -15,12 +15,14 @@
     Specific options:
         -f F                             First prime (default is 2, limit is 2000003 w/ -m load|fast, 9007199254740727 w/ -m calc)
         -n N                             Number of primes for which you wish to generate a table
-        -m, --method METHOD              Select method of generating primes (fast|load|calc) (default is 'calc')
+        -m, --method METHOD              Select method of generating primes (fast|load|calc)** (default is 'calc')
         -t, --time                       Display run time
     
     Common options:
         -h, --help                       Show this message
         -v, --version                    Show version
+
+    ** NOTE: The (so-called) 'fast' and 'load' prime methods are DEPRECATED. Use the default or -m 'calc'.
 
 ## Status
 

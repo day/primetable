@@ -159,6 +159,11 @@ if options.flags.version
   messages.push("PrimeTable v#{PrimeTable::VERSION}")
 end
 
+# Deprecating the 'fast' and 'load' prime_methods
+if options.flags.prime_method != :calc
+  messages.push("Warning! The (so-called) 'fast' and 'load' prime_methods are DEPRECATED. Use the default or -m 'calc'.")
+end
+
 # TODO: DRY this up! I'm repeating myself a lot right here.
 if ARGS != ["-h"]
   if options.flags.time
