@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    primetable (1.1.2)
+    primetable (1.1.3)
       formatador (~> 0.2, >= 0.2.5)
       therubyracer (~> 0.12, >= 0.12.2)
 

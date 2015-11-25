@@ -165,7 +165,8 @@ if options.flags.prime_method != :calc
 end
 
 # TODO: DRY this up! I'm repeating myself a lot right here.
-if ARGS != ["-h"]
+if (ARGS != ["-h"] and ARGS != ["--help"] and ARGS != ["-h","--help"] and 
+    ARGS != ["-v"] and ARGS != ["--version"] and ARGS != ["-v","--version"])
   if options.flags.time
     Timer.timer{
       if options.flags.f && options.flags.f > 0
