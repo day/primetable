@@ -26,4 +26,4 @@
 
 ## Status
 
-[![Build Status](https://travis-ci.org/day/primetable.svg?branch=master)](https://travis-ci.org/day/primetable)
+[![Test Coverage](https://codeclimate.com/github/day/primetable/badges/coverage.svg)](https://codeclimate.com/github/day/primetable/coverage) [![Build Status](https://travis-ci.org/day/primetable.svg?branch=master)](https://travis-ci.org/day/primetable)
