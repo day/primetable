@@ -74,7 +74,7 @@ Common options:
   end
 
   it 'knows where it is (has a root dir)' do
-    expect(ROOT_DIR.split("/")[-1]).to eq "primetable"
+    expect(ROOT_DIR.split("/")[-1].split("-")[0]).to eq "primetable"
   end
 
   it 'has a version number' do
